@@ -24,7 +24,7 @@ const TodoList: React.FC = () => {
   return (
     <div>
       <h1>Todo List</h1>
-      <input ref={inputRef} type="text" placeholder="Add new todo" />
+      <input ref={inputRef} type="text" placeholder="Add new " />
       <button onClick={handleAddTodo}>Add</button>
       <ul>
         {state.todos.map(todo => (
