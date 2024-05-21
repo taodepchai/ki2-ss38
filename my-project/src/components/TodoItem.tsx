@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Todo, useTodos } from './TodoContext';
+import Swal from 'sweetalert2';
+import "./TodoItem.css";
 
 interface TodoItemProps {
   todo: Todo;
@@ -15,7 +17,21 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
   };
 
   const handleDelete = () => {
-    dispatch({ type: 'DELETE_TODO', payload: todo });
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+       dispatch({ type: 'DELETE_TODO', payload: todo });
+      }
+    });
+    
   };
 
   const handleEdit = () => {

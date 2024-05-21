@@ -14,7 +14,7 @@ interface TodoState {
 
 interface TodoAction {
     type: 'INIT_TODOS' | 'ADD_TODO' | 'TOGGLE_TODO' | 'DELETE_TODO' | 'UPDATE_TODO';
-    payload?: any;
+    payload: any;
   }
 // Định nghĩa kiểu cho trạng thái (todos) và các hành động có thể thực hiện (INIT_TODOS, ADD_TODO, TOGGLE_TODO, UPDATE_TODO).
 

@@ -1,0 +1,53 @@
+.todo-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .checkbox {
+    margin-right: 10px;
+  }
+  
+  .todo-item input[type="text"] {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  .todo-item button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 5px;
+  }
+  
+  .edit-button {
+    color: #ffa500;
+  }
+  
+  .delete-button {
+    color: #ff0000;
+  }
+  
+  .save-button,
+  .cancel-button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .save-button {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .cancel-button {
+    background-color: #f44336;
+    color: white;
+  }
+  

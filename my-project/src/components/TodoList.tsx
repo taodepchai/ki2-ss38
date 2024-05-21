@@ -2,6 +2,7 @@ import React, { useMemo, useRef, useCallback } from 'react';
 import { useTodos } from './TodoContext';
 import TodoItem from './TodoItem';
 import {v4 as uuidv4} from 'uuid';
+import "./TodoList.css";
 
 const TodoList: React.FC = () => {
   const { state, dispatch } = useTodos();
