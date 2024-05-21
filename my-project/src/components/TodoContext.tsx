@@ -1,6 +1,6 @@
 // localStorage.setItem('todos', JSON.stringify([]));
 
-import React, { createContext, useReducer, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useReducer } from 'react';
 
 export interface Todo { 
   id: number;
@@ -13,10 +13,10 @@ interface TodoState {
 }
 
 interface TodoAction {
-    type: 'INIT_TODOS' | 'ADD_TODO' | 'TOGGLE_TODO' | 'DELETE_TODO';
+    type: 'INIT_TODOS' | 'ADD_TODO' | 'TOGGLE_TODO' | 'DELETE_TODO' | 'UPDATE_TODO';
     payload?: any;
   }
-// Định nghĩa kiểu cho trạng thái (todos) và các hành động có thể thực hiện (INIT_TODOS, ADD_TODO, TOGGLE_TODO).
+// Định nghĩa kiểu cho trạng thái (todos) và các hành động có thể thực hiện (INIT_TODOS, ADD_TODO, TOGGLE_TODO, UPDATE_TODO).
 
 const TodoContext = createContext<{
   state: TodoState;
@@ -43,6 +43,12 @@ const todoReducer = (state: TodoState, action: TodoAction): TodoState => {
       case 'DELETE_TODO':
         return {
           todos: state.todos.filter(todo => todo.id !== action.payload.id),
+        };
+      case 'UPDATE_TODO':
+        return {
+          todos: state.todos.map(todo =>
+            todo.id === action.payload.id ? { ...todo, name: action.payload.name } : todo
+          ),
         };
       default:
         return state;

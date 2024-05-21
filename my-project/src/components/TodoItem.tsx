@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Todo, useTodos } from './TodoContext';
 
 interface TodoItemProps {
@@ -7,6 +7,8 @@ interface TodoItemProps {
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
   const { dispatch } = useTodos();
+  const [isEditing, setIsEditing] = useState(false);
+  const [newName, setNewName] = useState(todo.name);
 
   const handleToggle = () => {
     dispatch({ type: 'TOGGLE_TODO', payload: todo });
@@ -16,15 +18,44 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
     dispatch({ type: 'DELETE_TODO', payload: todo });
   };
 
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleUpdate = () => {
+    dispatch({ type: 'UPDATE_TODO', payload: { id: todo.id, name: newName } });
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setNewName(todo.name);
+  };
+
   return (
     <li>
-      <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
-        {todo.name}
-      </span>
-      <button onClick={handleToggle}>
-        {todo.completed ? 'Undo' : 'Complete'}
-      </button>
-      <button onClick={handleDelete}>Delete</button>
+      {isEditing ? (
+        <>
+          <input 
+            type="text" 
+            value={newName} 
+            onChange={(e) => setNewName(e.target.value)} 
+          />
+          <button onClick={handleUpdate}>Save</button>
+          <button onClick={handleCancel}>Cancel</button>
+        </>
+      ) : (
+        <>
+          <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+            {todo.name}
+          </span>
+          <button onClick={handleToggle}>
+            {todo.completed ? 'Undo' : 'Complete'}
+          </button>
+          <button onClick={handleEdit}>Edit</button>
+          <button onClick={handleDelete}>Delete</button>
+        </>
+      )}
     </li>
   );
 };
