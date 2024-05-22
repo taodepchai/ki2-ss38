@@ -1,12 +1,13 @@
-import React, { useMemo, useRef, useCallback } from 'react';
+import React, { useMemo, useRef, useCallback, useState } from 'react';
 import { useTodos } from './TodoContext';
 import TodoItem from './TodoItem';
-import {v4 as uuidv4} from 'uuid';
-import "./TodoList.css";
+import { v4 as uuidv4 } from 'uuid';
+import './TodoList.css'; // Import file CSS cho TodoList
 
 const TodoList: React.FC = () => {
   const { state, dispatch } = useTodos();
-  const inputRef = useRef<HTMLInputElement>(null); //Tạo tham chiếu tới input để lấy giá trị của nó.
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [filter, setFilter] = useState<'ALL' | 'COMPLETED' | 'INCOMPLETE'>('ALL');
 
   const handleAddTodo = useCallback(() => {
     if (inputRef.current && inputRef.current.value) {
@@ -20,19 +21,30 @@ const TodoList: React.FC = () => {
     }
   }, [dispatch]);
 
-  const remainingTodos = useMemo(() => state.todos.filter(todo => !todo.completed).length, [state.todos]);
+  const filteredTodos = useMemo(() => {
+    if (filter === 'COMPLETED') {
+      return state.todos.filter(todo => todo.completed);
+    } else if (filter === 'INCOMPLETE') {
+      return state.todos.filter(todo => !todo.completed);
+    }
+    return state.todos;
+  }, [state.todos, filter]);
 
   return (
-    <div>
-      <h1>Todo List</h1>
-      <input ref={inputRef} type="text" placeholder="Add new " />
-      <button onClick={handleAddTodo}>Add</button>
+    <div className="todo-container">
+      <h1>Nhập tên công việc</h1>
+      <input ref={inputRef} type="text" placeholder="Nhập tên công việc" />
+      <button onClick={handleAddTodo} className="add-button">Thêm</button>
+      <div className="filter-buttons">
+        <button onClick={() => setFilter('ALL')} className={filter === 'ALL' ? 'active' : ''}>Tất cả</button>
+        <button onClick={() => setFilter('COMPLETED')} className={filter === 'COMPLETED' ? 'active' : ''}>Đã hoàn thành</button>
+        <button onClick={() => setFilter('INCOMPLETE')} className={filter === 'INCOMPLETE' ? 'active' : ''}>Chưa hoàn thành</button>
+      </div>
       <ul>
-        {state.todos.map(todo => (
+        {filteredTodos.map(todo => (
           <TodoItem key={todo.id} todo={todo} />
         ))}
       </ul>
-      <p>Remaining todos: {remainingTodos}</p>
     </div>
   );
 };

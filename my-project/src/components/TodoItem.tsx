@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Todo, useTodos } from './TodoContext';
-import Swal from 'sweetalert2';
-import "./TodoItem.css";
+import './TodoItem.css'; // Import file CSS cho TodoItem
 
 interface TodoItemProps {
   todo: Todo;
@@ -17,21 +16,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
   };
 
   const handleDelete = () => {
-
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-       dispatch({ type: 'DELETE_TODO', payload: todo });
-      }
-    });
-    
+    dispatch({ type: 'DELETE_TODO', payload: todo });
   };
 
   const handleEdit = () => {
@@ -49,27 +34,31 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
   };
 
   return (
-    <li>
+    <li className="todo-item">
+      <input 
+        type="checkbox" 
+        checked={todo.completed} 
+        onChange={handleToggle} 
+        className="checkbox"
+      />
       {isEditing ? (
         <>
           <input 
             type="text" 
             value={newName} 
             onChange={(e) => setNewName(e.target.value)} 
+            className="edit-input"
           />
-          <button onClick={handleUpdate}>Save</button>
-          <button onClick={handleCancel}>Cancel</button>
+          <button onClick={handleUpdate} className="save-button">Save</button>
+          <button onClick={handleCancel} className="cancel-button">Cancel</button>
         </>
       ) : (
         <>
-          <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+          <span style={{ textDecoration: todo.completed ? 'line-through' : 'none', marginLeft: '10px' }}>
             {todo.name}
           </span>
-          <button onClick={handleToggle}>
-            {todo.completed ? 'Undo' : 'Complete'}
-          </button>
-          <button onClick={handleEdit}>Edit</button>
-          <button onClick={handleDelete}>Delete</button>
+          <button onClick={handleEdit} className="edit-button">✏️</button>
+          <button onClick={handleDelete} className="delete-button">🗑️</button>
         </>
       )}
     </li>
